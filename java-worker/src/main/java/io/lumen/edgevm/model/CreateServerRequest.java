@@ -8,6 +8,7 @@ import lombok.Data;
 public class CreateServerRequest {
     private String name;
     private String groupId;
+    private String type;
     private String sourceServerId;
     private String password;
     private int cpu;

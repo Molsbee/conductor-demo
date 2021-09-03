@@ -4,6 +4,7 @@ import com.netflix.conductor.client.automator.TaskRunnerConfigurer;
 import com.netflix.conductor.client.http.TaskClient;
 import com.netflix.conductor.client.worker.Worker;
 import io.lumen.edgevm.worker.AuthenticationWorker;
+import io.lumen.edgevm.worker.CreateServerWorker;
 import io.lumen.edgevm.worker.GroupWorker;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,7 +12,7 @@ import java.util.Arrays;
 
 public class Application {
 
-    private static final int THREAD_COUNT = 2;
+    private static final int THREAD_COUNT = 3;
 
     public static void main(String[] args) {
         TaskClient taskClient = new TaskClient();
@@ -20,7 +21,8 @@ public class Application {
         RestTemplate restTemplate = new RestTemplate();
         Worker authenticationWorker = new AuthenticationWorker(restTemplate);
         Worker groupWorker = new GroupWorker(restTemplate);
-        TaskRunnerConfigurer configurer = new TaskRunnerConfigurer.Builder(taskClient, Arrays.asList(authenticationWorker, groupWorker))
+        CreateServerWorker createServerWorker = new CreateServerWorker(restTemplate);
+        TaskRunnerConfigurer configurer = new TaskRunnerConfigurer.Builder(taskClient, Arrays.asList(authenticationWorker, groupWorker, createServerWorker))
                 .withThreadCount(THREAD_COUNT)
                 .build();
 

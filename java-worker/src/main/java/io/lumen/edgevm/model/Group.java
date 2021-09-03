@@ -26,8 +26,8 @@ public class Group {
         return this.groups.stream()
                 .filter(g -> {
                     Group group = g.findGroupByName(groupName);
-                    return StringUtils.equalsIgnoreCase(group.getName(), groupName);
+                    return group != null && StringUtils.equalsIgnoreCase(group.getName(), groupName);
                 })
-                .findFirst().get();
+                .findFirst().orElse(null);
     }
 }

@@ -44,15 +44,16 @@ public class CreateServerWorker implements Worker {
 
             String endpoint = String.format("https://api.ctl.io/v2/servers/%s", accountAlias);
             CreateServerRequest request = CreateServerRequest.builder()
-                    .name("CONDUCT")
+                    .name("NETCON")
                     .groupId(groupId)
+                    .type("standard")
                     .sourceServerId("UBUNTU-16-64-TEMPLATE")
                     .cpu(2)
                     .memoryGB(4)
                     .password("ConductorPassword!")
                     .ttl(LocalDateTime.from(LocalDateTime.now()).plusDays(1).format(TTL_FORMAT))
                     .build();
-            QueueResponse response = restTemplate.exchange(endpoint, HttpMethod.GET, new HttpEntity<>(request, headers), QueueResponse.class).getBody();
+            QueueResponse response = restTemplate.exchange(endpoint, HttpMethod.POST, new HttpEntity<>(request, headers), QueueResponse.class).getBody();
 
             result.setStatus(COMPLETED);
             result.getOutputData().put("serverUUID", response.getServerUUID());
