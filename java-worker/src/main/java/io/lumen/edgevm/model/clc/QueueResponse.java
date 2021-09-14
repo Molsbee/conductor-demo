@@ -1,5 +1,6 @@
-package io.lumen.edgevm.model;
+package io.lumen.edgevm.model.clc;
 
+import io.lumen.edgevm.model.clc.Link;
 import lombok.Data;
 
 import java.util.List;

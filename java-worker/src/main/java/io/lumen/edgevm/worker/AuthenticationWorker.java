@@ -3,7 +3,7 @@ package io.lumen.edgevm.worker;
 import com.netflix.conductor.client.worker.Worker;
 import com.netflix.conductor.common.metadata.tasks.Task;
 import com.netflix.conductor.common.metadata.tasks.TaskResult;
-import io.lumen.edgevm.model.ClcAuthorization;
+import io.lumen.edgevm.model.clc.ClcAuthorization;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;

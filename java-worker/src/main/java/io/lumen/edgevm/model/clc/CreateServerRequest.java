@@ -1,4 +1,4 @@
-package io.lumen.edgevm.model;
+package io.lumen.edgevm.model.clc;
 
 import lombok.Builder;
 import lombok.Data;
