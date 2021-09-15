@@ -17,5 +17,6 @@ public class WorkflowDef {
     private String failureWorkflow;
     private Boolean restartable;
     private Boolean workflowStatusListenerEnabled;
-    private int schemaVersion;
+    @Builder.Default
+    private int schemaVersion = 2;
 }

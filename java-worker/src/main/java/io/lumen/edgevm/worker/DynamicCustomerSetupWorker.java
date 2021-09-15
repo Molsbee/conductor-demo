@@ -29,11 +29,12 @@ public class DynamicCustomerSetupWorker implements Worker {
 
         ArrayList<SubWorkflowDef> subWorkflows = new ArrayList<>();
         HashMap<String, Map<String, Object>> dynamicTasksInput = new HashMap<>();
-        List<String> joinTaskReferenceNames = new ArrayList<>();
         sites.forEach(s -> {
             String subWorkflowTaskReferenceName = "sub_workflow_" + s;
+
             Map<String, Object> subWorkflowInputParameters = new HashMap<>();
             subWorkflowInputParameters.put("site", s);
+            dynamicTasksInput.put(subWorkflowTaskReferenceName, subWorkflowInputParameters);
 
             ArrayList<WorkflowTask> tasks = new ArrayList<>();
             SubWorkflowDef subWorkflowDef = SubWorkflowDef.builder()
@@ -51,11 +52,10 @@ public class DynamicCustomerSetupWorker implements Worker {
                             .build())
                     .build();
 
-            dynamicTasksInput.put("sub_workflow_" + s, subWorkflowInputParameters);
             TASKS.forEach(taskName -> {
                 String taskReferenceName = taskName + "_" + s;
                 HashMap<String, Object> inputParameters = new HashMap<>();
-                inputParameters.put("site", "${workflow.input.site}");
+                inputParameters.put("site", s);
 
                 WorkflowTask workflowTask = WorkflowTask.builder()
                         .name(taskName)
@@ -63,18 +63,15 @@ public class DynamicCustomerSetupWorker implements Worker {
                         .inputParameters(inputParameters)
                         .build();
                 tasks.add(workflowTask);
-//                dynamicTasksInput.put(workflowTask.getTaskReferenceName(), subWorkflowInputParameters);
             });
-
             subWorkflows.add(subWorkflowDef);
-//            joinTaskReferenceNames.add(taskGroup.get(taskGroup.size() - 1).getTaskReferenceName());
         });
 
         TaskResult result = new TaskResult(task);
         result.setStatus(COMPLETED);
         result.getOutputData().put("dynamicTasksJSON", subWorkflows);
         result.getOutputData().put("dynamicTasksInputJSON", dynamicTasksInput);
-        result.getOutputData().put("joinTaskReferenceNames", joinTaskReferenceNames);
+        result.getOutputData().put("joinTaskReferenceNames", new ArrayList<>());
         return result;
     }
 }
